@@ -1,0 +1,24 @@
+mkdir env-yolo
+python3.11 -m venv env-yolo
+source env-yolo/bin/activate
+pip install --upgrade setuptools
+pip install -r requirements.txt
+
+extractBB:
+- fotos, mitteld depthimage_converter extrahiert, in frames_rgb ablegen
+- Ablage in Ordnern wie aus der depthimage_converter Ausgabe -> copy-paste
+z.B. frames_rgb/Depth_20240514_133531.tcfa
+Im root ausführen:
+python extractbb.py
+o. (mit Pytoch Cuda installiert https://pytorch.org/get-started/locally/)
+python extractbb.py --device 0
+- bounding boxes werden in orientation-estimation/boundingboxes/frames_rgb abgelegt
+- Label Datei (.csv) in Orientation_estimation ablegen -> orientation_estimation/labels.csv
+Im root ausführen:
+python orientation-estimation/create_labels.py
+Label-Dateien werden in orientation-estimation/labels erstellt
+Im root ausführen:
+python orientation-estimation/split.py
+Damit wird der Datensatz in 70% Trainingsdaten, 20% Evaluierungsdaten und 10% Testdaten aufgeteilt.
+Die Label und Bilddateien werden wie für YoloV7 benötig in den Ordnern orientation-estimation/train_rgb, orientation-estimation/val_rgb und orientation-estimation/test_rgb abgelegt.
+Diese Ordnerstruktur wird in der Datei orientation-estimation/pose-training_rgb.yaml festgelegt. In den jeweiligen Ordnern muss sich ein Unterordner "labels" und"images" befinden.

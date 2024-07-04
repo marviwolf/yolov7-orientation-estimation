@@ -1,0 +1,13 @@
+# train and val data as 1) directory: path/images/, 2) file: path/images.txt, or 3) list: [path1/images/, path2/images/]
+val: ./training/test_rgb/images
+test: ./training/test_rgb/images
+
+# number of classes
+nc: 8
+
+# class names
+names: [ 'front', 'front-right','right','back-right','back','back-left','left','front-left' ]
+
+#py train.py --workers 8 --device 0 --batch-size 8 --data ./training/pose-training_rgb.yaml --img 640 640 --cfg ./training/yolov7-pose.yaml --weights '' --name yolov7-8pose_rgb --hyp data/hyp.scratch.p5.yaml --project training/runs --epochs 30
+
+# python test.py --data training/pose-training_rgb_test.yaml --img 640 --batch 8 --conf 0.001 --iou 0.65 --device 0 --weights training/runs/yolov7-8pose_rgb_from_scratch_300_tiny_hyp/weights/best.pt --name rgb_from_scratch_300_tiny_test --project training/runs
