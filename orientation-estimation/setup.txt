@@ -1,12 +1,15 @@
+Python 3.11 muss installiert sein und genutzt werden
+Anleitung bezieht sich auf Linux Installation
+
 mkdir env-yolo
 python3.11 -m venv env-yolo
 source env-yolo/bin/activate
 pip install --upgrade setuptools
 pip install -r requirements.txt
 
-extractBB:
 - fotos, mitteld depthimage_converter extrahiert, in frames_rgb ablegen
 - Ablage in Ordnern wie aus der depthimage_converter Ausgabe -> copy-paste
+- yolov7.pt muss im root directory liegen (sollte enthalten sein)
 z.B. frames_rgb/Depth_20240514_133531.tcfa
 Im root ausführen:
 python extractbb.py
@@ -22,3 +25,11 @@ python orientation-estimation/split.py
 Damit wird der Datensatz in 70% Trainingsdaten, 20% Evaluierungsdaten und 10% Testdaten aufgeteilt.
 Die Label und Bilddateien werden wie für YoloV7 benötig in den Ordnern orientation-estimation/train_rgb, orientation-estimation/val_rgb und orientation-estimation/test_rgb abgelegt.
 Diese Ordnerstruktur wird in der Datei orientation-estimation/pose-training_rgb.yaml festgelegt. In den jeweiligen Ordnern muss sich ein Unterordner "labels" und"images" befinden.
+Im root ausführen (mit Pytoch Cuda installiert https://pytorch.org/get-started/locally/):
+python train.py --workers 8 --device 0 --batch-size 8 --data ./orientation-estimation/pose-training_rgb.yaml --img 640 640 --cfg ./orientation-estimation/yolov7-pose.yaml --weights '' --name yolov7-8pose_rgb --hyp data/hyp.scratch.custom.yaml --project orientation-estimation/runs --epochs 300
+In orientation-estimation/runs/lov7-8pose_rgb werden die Ergebnisse gespeichert, darunter die erzeugten Gewichte. 
+Um die Gewichte dann auf einen anderen Datensatz zu testen gibt es die "orientation-estimation/pose-training_rgb_test.yaml" .
+In dieser werden die erzeugten Testdaten verlinkt.
+Mit diesem die trainierten Gewichte zu testen:
+python test.py --data orientation-estimation/pose-training_rgb_test.yaml --img 640 --batch 8 --conf 0.001 --iou 0.65 --device 0 --weights orientation-estimation/runs/yolov7-8pose_rgb/weights/best.pt --name yolov7-8pose_rgb_test --project orientation-estimation/runs
+Im Ordner orientation-estimation/runs/lov7-8pose_rgb_test finden sich die Ergebnisse des Testlaufs.
