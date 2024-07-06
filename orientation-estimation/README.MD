@@ -53,8 +53,8 @@ Mit diesem die trainierten Gewichte testen: \
 ```python test.py --data orientation-estimation/pose-training_rgb_test.yaml --img 640 --batch 8 --conf 0.001 --iou 0.65 --device 0 --weights orientation-estimation/runs/yolov7-8pose_rgb/weights/best.pt --name yolov7-8pose_rgb_test --project orientation-estimation/runs``` \
 Im Ordner orientation-estimation/runs/lov7-8pose_rgb_test finden sich die Ergebnisse des Testlaufs.
 ![](test.png)
-12. **ALTERNATIV**
-    Um mithilfe von vortrainierten Gewichten zu testen (auf Session 2, etwa 3300 Fotos) kann folgender Befehl genutzt werden:
+12. **ALTERNATIV:**\
+    Um mithilfe von vortrainierten Gewichten zu testen (auf Session 2, etwa 3300 Fotos) kann folgender Befehl genutzt werden:\
     ```python test.py --data orientation-estimation/pose-training_rgb_test_pretrained.yaml --img 640 --batch 8 --conf 0.001 --iou 0.65 --device 0 --weights orientation-estimation/pretrained-pose.pt --name yolov7-8pose_rgb_test_pretrained --project orientation-estimation/runs```
 
 ## Variationen im Training
